@@ -3,3 +3,4 @@ dist/
 export/
 test/results/*.*
 junitresults.xml
+node_modules/

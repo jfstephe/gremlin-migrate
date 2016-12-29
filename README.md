@@ -10,7 +10,6 @@ The files are ordered based on [semver](https://github.com/npm/node-semver) nami
 
 ```bash
 npm install gremlin-migrate --save
-typings install gremlin-migrate # (optional, for typescript)
 ```
 
 ## Usage
