@@ -1,0 +1,5 @@
+typings/
+dist/
+export/
+test/results/*.*
+junitresults.xml
