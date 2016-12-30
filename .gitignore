@@ -4,3 +4,4 @@ export/
 test/results/*.*
 junitresults.xml
 node_modules/
+npm-debug.log

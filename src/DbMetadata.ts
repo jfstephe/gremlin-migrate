@@ -1,6 +1,6 @@
 import { createClient } from 'gremlin';
 import * as bunyan from 'bunyan';
-let log = bunyan.createLogger({name: 'DBUpgrader'});
+let log = bunyan.createLogger({name: 'DbMetadata'});
 
 export default class DBMetadata {
   private client;
@@ -11,7 +11,7 @@ export default class DBMetadata {
   public getCurrentDbVersion() {
     log.info('getCurrentDbVersion...');
     let promise = new Promise((resolve, reject) => {
-      this.client.execute('g.V().has(label, \'databaseMetadata\');', (err, results) => {
+      this.client.execute('g=graph.traversal();g.V().has(label, \'databaseMetadata\');', (err, results) => {
         if (err) {
           log.error(err);
           reject(err);

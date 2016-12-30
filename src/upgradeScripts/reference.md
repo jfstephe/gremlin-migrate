@@ -16,7 +16,10 @@ mgmt.updateIndex(mgmt.getGraphIndex("byNameAndAgeComposite"), SchemaAction.REIND
 mgmt.commit()
 
 
-
+mgmt = g.getManagementSystem()
+name = mgmt.makePropertyKey('name').dataType(String.class).make()
+mgmt.buildIndex('byName',Vertex.class).addKey(name).unique().buildCompositeIndex()
+mgmt.commit()
 
 mgmt = graph.openManagement()
 name = mgmt.makePropertyKey('consistentName').dataType(String.class).make()
@@ -41,3 +44,8 @@ sensorReading = mgmt.makePropertyKey('sensorReading').dataType(Double.class).car
 mgmt.commit()
 
 
+// Concerned that Titan could have read cache in that last query, instead of relying on the index?
+// Start a new instance to rule out cache hits.  Now we're definitely using the index.
+graph.close()
+graph = TitanFactory.open("conf/titan-cassandra-es.properties")
+g.V().has("desc", containsText("baz"))
