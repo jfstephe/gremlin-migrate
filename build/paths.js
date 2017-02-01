@@ -16,9 +16,6 @@ function getOutputRoot() {
   return isExport ? exportRoot : distRoot;
 }
 
-function getOutputFeatureDir() {
-  return getOutputRoot() + 'public/features/';
-}
 
 function getOutputUpgradeScripts() {
   return getOutputRoot() + 'upgradeScripts/';

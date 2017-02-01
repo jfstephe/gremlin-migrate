@@ -1,14 +1,16 @@
 version: '2'
-# Inspired by https://hub.docker.com/r/soloman1124/dynamodb-titan/
-# Use the following gremlin command to connect to the titan DB instance (include the ':').
+# Use the following gremlin command to connect to the janusgraph DB instance (include the ':').
 # :remote connect tinkerpop.server conf/remote.yaml
+# To execute just the gremlin console: docker-compose run janusgraph_server console
 services:
-  titan_server:
-    image: soloman1124/dynamodb-titan
+  janusgraph_server:
+    image: bongo-janusgraph
+    build:
+      context: .
+      args:
+        DYNAMODB_ENDPOINT: http://dynamodb:8000
     links:
       - dynamodb
-    environment:
-      - DYNAMODB_ENDPOINT=http://dynamodb:8000
     ports:
       - 8182:8182
   dynamodb:

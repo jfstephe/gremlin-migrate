@@ -1,3 +1,5 @@
+:remote connect tinkerpop.server conf/remote.yaml
+
 // indexes
 graph.tx().rollback() //Never create new indexes while a transaction is active
 mgmt = graph.openManagement()

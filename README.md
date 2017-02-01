@@ -18,7 +18,7 @@ The library exports a function taking configuration parameters and returning an 
 ```typescript
 import upgradeDbToLatest from 'gremlin-migrate';
 ...
-upgradeDbToLatest(titanDbAddress, portNumber, pathToUpgradeScriptDirectory).then(() => {
+upgradeDbToLatest(janusGraphDbAddress, portNumber, pathToUpgradeScriptDirectory).then(() => {
     console.log('SUCCESS!');
 });
 ```
@@ -30,8 +30,8 @@ upgradeDbToLatest(titanDbAddress, portNumber, pathToUpgradeScriptDirectory).then
 // I am an example of a comment!
 graph.addVertex(label, 'person').property('name', 'john').iterate();
 person2 = graph.addVertex(label, 'person');
-// NOTE: Don't forget to add the '.iterate()' else the step won't necessarily take effect!
-person2.property('name', 'john').iterate();
+// NOTE: Don't forget to add the '.next()' else the step won't necessarily take effect!
+person2.property('name', 'john').next();
 // DON'T put transactions in your upgrade scripts. The scripts are automatically wrapped in a transaction.
 // graph.tx().commit();
 ```
@@ -60,10 +60,17 @@ export default class Example {
 
 ## Tests
 
-Run 'gulp test' to run the tests. These spin up docker containers using [docker-compose](https://docs.docker.com/compose/install/) with an empty DB so you will need docker set up on your system.
+The tests are run against a janus-graph/dynamoDb backend configuration to exercise the transaction locking. They spin up docker containers using [docker-compose](https://docs.docker.com/compose/install/) with an empty DB so you will need docker set up on your system.
+
+
+Run 'docker-compose build' and wait until that finishes (this is a one-off step)
+
+Run 'gulp build' to build the app.
+
+Then run 'gulp test' to run the tests.
 
 ## About
-My specific use-case was for [flyway](https://flywaydb.org/)-like migrations for TitanDB, but I couldn't find a tool that did that.
+My specific use-case was for [flyway](https://flywaydb.org/)-like migrations for janus-graph, but I couldn't find a tool that did that.
 
 ## Contributions
 Pull requests will be gratefully received. Please ensure you have a test around the change/improvement you are proposing.

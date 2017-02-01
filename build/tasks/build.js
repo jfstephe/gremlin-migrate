@@ -73,17 +73,16 @@ gulp.task('build-unclean', function(callback) {
   var buildSteps;
   var postBuildSteps;
   if (paths.getIsExport()) {
-    preBuildSteps = ['installTypings', 'copyPackageJson'];
+    preBuildSteps = ['lint', 'installTypings', 'copyPackageJson'];
     buildSteps = ['buildts', 'copyUpgradeScripts', 'installDependencies'];
     postBuildSteps = [ 'removeOutputPackageJson'];
   }
   else {
-    preBuildSteps = ['installTypings'];
+    preBuildSteps = [/*'lint',*/ 'installTypings'];
     buildSteps = ['buildts', 'copyUpgradeScripts'];
     postBuildSteps = ['dummy'];
   }
   return runSequence(
-    ['lint'],
     preBuildSteps,
     buildSteps,
     postBuildSteps,

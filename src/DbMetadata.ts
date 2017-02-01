@@ -1,17 +1,17 @@
-import { createClient } from 'gremlin';
+import GremlinProvider from './GremlinProvider';
 import * as bunyan from 'bunyan';
 let log = bunyan.createLogger({name: 'DbMetadata'});
 
 export default class DBMetadata {
-  private client;
-  constructor(client) {
-    this.client = client;
+  private gremlinProvider;
+  constructor(gremlinProvider: GremlinProvider) {
+    this.gremlinProvider = gremlinProvider;
   }
 
   public getCurrentDbVersion() {
     log.info('getCurrentDbVersion...');
     let promise = new Promise((resolve, reject) => {
-      this.client.execute('g=graph.traversal();g.V().has(label, \'databaseMetadata\');', (err, results) => {
+      this.gremlinProvider.getGremlinClient().execute('g=graph.traversal();g.V().has(label, \'databaseMetadata\');', (err, results) => {
         if (err) {
           log.error(err);
           reject(err);
