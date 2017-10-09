@@ -1,6 +1,6 @@
 {
   "name": "gremlin-migrate",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Runs gremlin-groovy scripts in-order to upgrade the DB schema",
   "main": "./dist/index.js",
   "types": "./dist/index.d.js",

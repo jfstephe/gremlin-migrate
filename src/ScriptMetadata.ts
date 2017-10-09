@@ -15,7 +15,7 @@ export default class ScriptMetadata {
 
   public getNewUpgradeFiles(currentVersionNumber) {
     let filenamesWithCorrectExtension = _.filter(fs.readdirSync(this.scriptFolder), (filename) => {
-      return filename.endsWith(FILE_EXTENSION);
+      return filename.endsWith(FILE_EXTENSION) && !filename.startsWith('common');
     });
     let filenamesAsVersionNumbers = _.map(filenamesWithCorrectExtension, (filename) => {
       return filename.replace(FILE_EXTENSION, '');
