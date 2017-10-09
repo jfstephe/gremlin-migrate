@@ -1,6 +1,6 @@
 {
   "name": "gremlin-migrate",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Runs gremlin-groovy scripts in-order to upgrade the DB schema",
   "main": "./dist/index.js",
   "types": "./dist/index.d.js",
@@ -15,7 +15,9 @@
   "keywords": [
     "gremlin",
     "titan",
+    "janusgraph",
     "database",
+    "graph",
     "upgrade",
     "migration",
     "migrate"

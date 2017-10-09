@@ -23,6 +23,9 @@ upgradeDbToLatest(janusGraphDbAddress, portNumber, pathToUpgradeScriptDirectory)
 });
 ```
 
+### Script library
+If you want to use common functions across your groovy files, you can put them in a 'common.groovy' file in the update script directory. These will be available in all of the upgrade files.
+
 ## Example
 
 ### 0.0.1.groovy (in 'upgradeScripts' subdir)

@@ -10,11 +10,13 @@ export default class DBUpgrader {
   private dbMetadata;
   private scriptMetadata;
   private log = bunyan.createLogger({name: 'DBUpgrader'});
+  private commonScriptContents;
 
   constructor(gremlinProvider: GremlinProvider, dbMetadata, scriptMetadata) {
     this.gremlinProvider = gremlinProvider;
     this.dbMetadata = dbMetadata;
     this.scriptMetadata = scriptMetadata;
+    this.commonScriptContents = '\r\n' + this.scriptMetadata.getFileContents('common.groovy') + '\r\n';
   }
 
   public upgradeToLatest(context?) {
@@ -40,6 +42,7 @@ export default class DBUpgrader {
       let contents = this.scriptMetadata.getFileContents(filename);
       contents = this.wrapWithVersionUpdateToContents(contents, currentVersion, newVersionNumber);
       contents = this.startTransactionExplicitly(contents);
+      contents = this.commonScriptContents + contents;
       let constraintsExecutor;
       constraintsExecutor = () => { return Promise.resolve(); };
       if (_.isUndefined(currentVersion)) {

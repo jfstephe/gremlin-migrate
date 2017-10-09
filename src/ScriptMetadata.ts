@@ -30,6 +30,11 @@ export default class ScriptMetadata {
   }
 
   public getFileContents(filename) {
-    return fs.readFileSync(path.join(this.scriptFolder, filename)) + '';
+    let contents = '';
+    let fileFullPath = path.join(this.scriptFolder, filename);
+    if (fs.existsSync(fileFullPath)) {
+      contents = fs.readFileSync(fileFullPath) + ''
+    }
+    return contents;
   }
 }

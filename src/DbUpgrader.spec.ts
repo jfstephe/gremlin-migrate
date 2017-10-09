@@ -23,6 +23,7 @@ function setupSuT() {
   clientProvider = new GremlinProvider('192.168.99.100', 8182);
   let clientProvider2 = new GremlinProvider('192.168.99.100', 8182);
   dbMetadata = new DbMetadata(clientProvider);
+  scriptMetadata.getFileContents.and.returnValue('def test(param) { return true; } ');
   dbUpgrader = new DbUpgrader(clientProvider, dbMetadata, scriptMetadata);
   scriptMetadata2 = jasmine.createSpyObj('scriptMetadata2', ['getNewUpgradeFiles', 'getFileContents']);
   dbUpgrader2 = new DbUpgrader(clientProvider2, dbMetadata2, scriptMetadata2);
@@ -57,21 +58,32 @@ describe("Given a database", function() {
         done();
       }, fail);
     });
-    fdescribe('When upgradeToLatest is called with a single upgrade script to v0.0.1', () => {
+    describe('When upgradeToLatest is called with a single upgrade script to v0.0.1 which references a common function', () => {
       beforeEach((done) => {
         scriptMetadata.getNewUpgradeFiles.and.returnValue(['0.0.1.groovy']);
-        scriptMetadata.getFileContents.and.returnValue('');
+        scriptMetadata.getFileContents.and.returnValues(
+          'if (!test("dummyParam")) { throw new Exception("FAILED TO CALL COMMON TEST FUNCTION"); } ');
         dbUpgrader.upgradeToLatest().then(done, fail);
       });
-      // Repeat this to see intermittant errors.
-      for (var i = 0; i < 100; i++) {
-        it("Then the version is 0.0.1", function(done) {
-          dbMetadata.getCurrentDbVersion().then(currentVersion => {
-            expect(currentVersion).toEqual('0.0.1');
-            done();
-          }, fail);
-        });
-      }
+      it("Then the version is 0.0.1", function(done) {
+        dbMetadata.getCurrentDbVersion().then(currentVersion => {
+          expect(currentVersion).toEqual('0.0.1');
+          done();
+        }, fail);
+      });
+    });
+    describe('When upgradeToLatest is called with a single upgrade script to v0.0.1', () => {
+      beforeEach((done) => {
+        scriptMetadata.getNewUpgradeFiles.and.returnValue(['0.0.1.groovy']);
+        scriptMetadata.getFileContents.and.returnValues('');
+        dbUpgrader.upgradeToLatest().then(done, fail);
+      });
+      it("Then the version is 0.0.1", function(done) {
+        dbMetadata.getCurrentDbVersion().then(currentVersion => {
+          expect(currentVersion).toEqual('0.0.1');
+          done();
+        }, fail);
+      });
       describe('When upgradeToLatest is called with a single upgrade script to v0.0.2', () => {
         beforeEach((done) => {
           scriptMetadata.getNewUpgradeFiles.and.returnValue(['0.0.2.groovy']);
