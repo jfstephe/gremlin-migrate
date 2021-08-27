@@ -1,6 +1,6 @@
 import GremlinProvider from './GremlinProvider';
 import * as bunyan from 'bunyan';
-let log = bunyan.createLogger({name: 'DbMetadata'});
+let log = bunyan.createLogger({name: 'GremlinMigrate: DbMetadata'});
 
 export default class DBMetadata {
   private gremlinProvider;

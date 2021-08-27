@@ -1,15 +1,13 @@
-import GremlinProvider from './GremlinProvider';
-import DbMetadata from './DbMetadata';
-import ScriptMetadata from './ScriptMetadata';
-import GremlinCommandLibrary from './GremlinCommandLibrary';
-import * as _ from 'lodash';
 import * as bunyan from 'bunyan';
+import * as _ from 'lodash';
+import GremlinCommandLibrary from './GremlinCommandLibrary';
+import GremlinProvider from './GremlinProvider';
 
 export default class DBUpgrader {
   private gremlinProvider: GremlinProvider;
   private dbMetadata;
   private scriptMetadata;
-  private log = bunyan.createLogger({name: 'DBUpgrader'});
+  private log = bunyan.createLogger({name: 'GremlinMigrate: DBUpgrader'});
   private commonScriptContents;
 
   constructor(gremlinProvider: GremlinProvider, dbMetadata, scriptMetadata) {
@@ -20,7 +18,7 @@ export default class DBUpgrader {
   }
 
   public upgradeToLatest(context?) {
-    this.log = bunyan.createLogger({name: 'DBUpgrader' + (context || '')});
+    this.log = bunyan.createLogger({name: 'GremlinMigrate: DBUpgrader' + (context || '')});
     let promise = new Promise((resolve, reject) => {
       let delayedResolve = () => {
         // TODO: Remove this. This shouldn't be needed but is!
@@ -32,6 +30,10 @@ export default class DBUpgrader {
       });
     });
     return promise;
+  }
+
+  public dispose() {
+    this.gremlinProvider.dispose();
   }
 
   private upgradeUsingFiles(currentVersion, upgradeFilenames, resolve, reject, context) {
@@ -49,7 +51,7 @@ export default class DBUpgrader {
         let constraints = GremlinCommandLibrary.getCreateUniquePropertyIndexForLabel('databaseMetadata', 'version', true);
         this.log.info('Constraints: ' + constraints);
         constraintsExecutor = () => {
-          let constraintsPromise = new Promise((constraintsResolve, constraintsReject) => {
+          let constraintsPromise = new Promise<void>((constraintsResolve, constraintsReject) => {
             return this.gremlinProvider.getGremlinClient().execute(constraints, (err3, results) => {
               if (err3) {
                 this.log.info('CONSTRAINTS FAILED!', err3);

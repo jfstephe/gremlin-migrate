@@ -1,6 +1,6 @@
 import { createClient } from 'gremlin';
 import * as bunyan from 'bunyan';
-let log = bunyan.createLogger({name: 'GremlinProvider'});
+let log = bunyan.createLogger({name: 'GremlinMigrate: GremlinProvider'});
 
 export default class GremlinProvider {
     private config: any = {};
