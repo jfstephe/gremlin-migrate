@@ -1,6 +1,6 @@
 {
   "name": "gremlin-migrate",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Runs gremlin-groovy scripts in-order to upgrade the DB schema",
   "main": "./dist/index.js",
   "types": "./dist/index.d.js",
@@ -73,7 +73,7 @@
   "dependencies": {
     "bunyan": "^1.8.10",
     "gremlin": "^2.5.1",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.21",
     "semver": "^5.3.0"
   }
 }
